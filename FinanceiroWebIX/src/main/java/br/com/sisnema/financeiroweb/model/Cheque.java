@@ -13,33 +13,33 @@ import br.com.sisnema.financeiroweb.domain.SituacaoCheque;
 @Entity
 public class Cheque extends BaseEntity {
 
-	private static final long serialVersionUID = 6003694116985956677L;
+	private static final long serialVersionUID = 1018450608232560747L;
 
 	@EmbeddedId
 	private ChequeId id;
-
+	
 	@ManyToOne
-	@JoinColumn(name = "cod_conta", insertable = false, updatable = false)
+	@JoinColumn(name="cod_conta", insertable=false, updatable=false)
 	private Conta conta;
 	
 	@Enumerated(EnumType.STRING)
 	private SituacaoCheque situacao;
-
+	
 	@OneToOne
-	@JoinColumn(nullable = true)
-	Lancamento lancamento;
+	@JoinColumn(nullable=true)
+	private Lancamento lancamento;
 
 	public Cheque() {
-	}
-
-	public Cheque(ChequeId id) {
-		super();
-		this.id = id;
 	}
 
 	public Cheque(Conta conta) {
 		super();
 		this.conta = conta;
+	}
+
+	public Cheque(ChequeId id) {
+		super();
+		this.id = id;
 	}
 
 	public ChequeId getId() {

@@ -9,16 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Lancamento extends BaseEntity{
-	
-	private static final long serialVersionUID = -8196785385214901725L;
+public class Lancamento extends BaseEntity {
 
+	private static final long serialVersionUID = -8196785385214901725L;
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer codigo;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -28,19 +29,23 @@ public class Lancamento extends BaseEntity{
 	private BigDecimal valor;
 	
 	@ManyToOne
-	@JoinColumn(name = "cod_usuario", nullable = false)
+	@JoinColumn(name="cod_usuario", nullable=false)
 	private Usuario usuario;
 	
 	@ManyToOne
-	@JoinColumn(name = "cod_conta", nullable = false)
+	@JoinColumn(name="cod_conta", nullable=false)
 	private Conta conta;
 	
 	@ManyToOne
-	@JoinColumn(name = "cod_categoria", nullable = false)
+	@JoinColumn(name="cod_categoria", nullable=false)
 	private Categoria categoria;
 	
+	@OneToOne(mappedBy="lancamento")
+	private Cheque cheque;
+
 	public Lancamento() {
-	}	
+		// TODO Auto-generated constructor stub
+	}
 
 	public Lancamento(Integer codigo) {
 		super();
@@ -106,8 +111,9 @@ public class Lancamento extends BaseEntity{
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((categoria == null) ? 0 : categoria.hashCode());
+		result = prime * result + ((cheque == null) ? 0 : cheque.hashCode());
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		result = prime * result + ((conta == null) ? 0 : conta.hashCode());
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
@@ -122,7 +128,7 @@ public class Lancamento extends BaseEntity{
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
+		if (!super.equals(obj)) {
 			return false;
 		}
 		if (!(obj instanceof Lancamento)) {
@@ -134,6 +140,13 @@ public class Lancamento extends BaseEntity{
 				return false;
 			}
 		} else if (!categoria.equals(other.categoria)) {
+			return false;
+		}
+		if (cheque == null) {
+			if (other.cheque != null) {
+				return false;
+			}
+		} else if (!cheque.equals(other.cheque)) {
 			return false;
 		}
 		if (codigo == null) {
@@ -184,7 +197,7 @@ public class Lancamento extends BaseEntity{
 	@Override
 	public String toString() {
 		return "Lancamento [codigo=" + codigo + ", data=" + data + ", descricao=" + descricao + ", valor=" + valor
-				+ ", usuario=" + usuario + ", conta=" + conta + ", categoria=" + categoria + "]";
+				+ ", usuario=" + usuario + ", conta=" + conta + ", categoria=" + categoria + ", cheque=" + cheque + "]";
 	}
 	
 	public enum Fields {
@@ -195,8 +208,9 @@ public class Lancamento extends BaseEntity{
 		CONTA("conta"),
 		CATEGORIA("categoria"),
 		COD_CATEGORIA("categoria.codigo"),
-		FATOR_CATEGORIA("categoria.fator")
-		;
+		FATOR_CATEGORIA("categoria.fator"),
+		CHEQUE("cheque"),
+		NUMERO_CHEQUE("cheque.id.numero");
 		
 		private String property;
 
@@ -208,6 +222,14 @@ public class Lancamento extends BaseEntity{
 		public String toString() {
 			return property;
 		}
+	}
+
+	public Cheque getCheque() {
+		return cheque;
+	}
+
+	public void setCheque(Cheque cheque) {
+		this.cheque = cheque;
 	}
 
 }

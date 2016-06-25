@@ -7,24 +7,22 @@ import org.hibernate.Session;
 
 import br.com.sisnema.financeiroweb.exception.DAOException;
 import br.com.sisnema.financeiroweb.exception.LockException;
-import br.com.sisnema.financeiroweb.model.Conta;
-import br.com.sisnema.financeiroweb.model.Usuario;
 import br.com.sisnema.financeiroweb.util.JPAUtil;
 
 /**
- * Classe abstrata que herdara os comportamentos de {@link IDAO} e conterï¿½ atributos 
- * e funcionalidades genï¿½ricas a todas as filhas 
+ * Classe abstrata que herdara os comportamentos de {@link IDAO} e conterá atributos 
+ * e funcionalidades genéricas a todas as filhas 
  */
 public abstract class DAO<T> implements IDAO<T> {
 
 	/**
-	 * Como todas as DAOS irï¿½o possuir uma sessao, criaremos a mesma
+	 * Como todas as DAOS irão possuir uma sessao, criaremos a mesma
 	 * na classe pai, sendo ela HERDADA pelas filhas....
 	 */
     protected EntityManager em;
 	
 	/**
-	 * Mï¿½todo construtor de DAO para INICIALIZAR a sessao
+	 * Método construtor de DAO para INICIALIZAR a sessao
 	 * do hibernate
 	 */
 	public DAO() {
@@ -34,15 +32,15 @@ public abstract class DAO<T> implements IDAO<T> {
 	public void salvar(T model) throws DAOException {
 		try {
 			getSession().saveOrUpdate(model);
-			commit();
-			beginTransaction();
+			comitaTransacao();
+			iniciaTransacao();
 			
 		} catch (OptimisticLockException ole){
-			rollback();
-			beginTransaction();
+			cancelaTransacao();
+			iniciaTransacao();
 			
-			throw new LockException("Este registro acaba de ser atualizado por outro usuï¿½rio. "
-					+ "Refaï¿½a a pesquisa", ole);
+			throw new LockException("Este registro acaba de ser atualizado por outro usuário. "
+					+ "Refaça a pesquisa", ole);
 		} catch (Exception e) {
 			throw new DAOException(e);
 		}
@@ -59,20 +57,25 @@ public abstract class DAO<T> implements IDAO<T> {
     protected final Session getSession() {
     	if(!em.isOpen()){
     		em = JPAUtil.getEntityManager();
-    		    	}
+    	}
     	return (Session) em.unwrap(Session.class);
     }
     
-    protected final void commit() {
+    public final void comitaTransacao() {
     	getSession().getTransaction().commit();
 	}
     
-    protected final void beginTransaction() {
+    public final void cancelaTransacao() {
+    	JPAUtil.getEntityManager().getTransaction().rollback();
+    }
+    
+    protected final void iniciaTransacao() {
     	JPAUtil.getEntityManager().getTransaction().begin();
     }
     
-    protected final void rollback() {
-    	JPAUtil.getEntityManager().getTransaction().rollback();
+    public void flushAndClear(){
+    	getSession().flush();
+    	getSession().clear();
     }
 }
 

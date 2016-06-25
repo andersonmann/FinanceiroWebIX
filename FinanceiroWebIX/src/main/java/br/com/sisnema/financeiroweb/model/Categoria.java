@@ -19,23 +19,25 @@ public class Categoria extends BaseEntity {
 	private static final long serialVersionUID = 8699576992780140687L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer codigo;
 
 	private String descricao;
+	
 	private int fator;
-
+	
 	@ManyToOne
-	@JoinColumn(name = "categoria_pai", nullable = true)
+	@JoinColumn(name="categoria_pai",nullable=true)
 	private Categoria pai;
-
+	
 	@ManyToOne
-	@JoinColumn(name = "usuario", nullable = true)
+	@JoinColumn(name="usuario",nullable=false)
 	private Usuario usuario;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "categoria_pai", updatable = false)
-	@OrderBy(value = "descricao asc")
+	
+	
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
+	@JoinColumn(name="categoria_pai", updatable=false)	
+	@OrderBy(value="descricao asc")
 	private List<Categoria> filhos;
 
 	public Categoria() {

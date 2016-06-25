@@ -64,10 +64,17 @@ public class UsuarioBean extends ActionBean<Usuario> {
 			
 			boolean isInsert = (usuario.getCodigo() == null);
 			
+			if(isInsert && StringUtils.isBlank(conta.getDescricao())){
+				apresentarMensagemDeErro("Informe uma conta válida");
+				return null;
+			}
+			
+			
 			negocio.salvar(usuario);
 			
 			if(isInsert && StringUtils.isNotBlank(conta.getDescricao())){
 				conta.setUsuario(usuario);
+				conta.setFavorita(true);
 				new ContaRN().salvar(conta);
 			}
 			

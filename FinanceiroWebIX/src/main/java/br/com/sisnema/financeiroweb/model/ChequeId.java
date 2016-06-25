@@ -8,12 +8,12 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ChequeId implements Serializable {
 
-	private static final long serialVersionUID = -4337697200572265509L;
-
-	@Column(nullable = false)
+	private static final long serialVersionUID = 6174561841602014344L;
+	
+	@Column(nullable=false)
 	private Integer numero;
-
-	@Column(name = "cod_conta", nullable = false)
+	
+	@Column(name="cod_conta", nullable=false)
 	private Integer conta;
 
 	public ChequeId() {
@@ -22,6 +22,22 @@ public class ChequeId implements Serializable {
 	public ChequeId(Integer numero, Integer conta) {
 		super();
 		this.numero = numero;
+		this.conta = conta;
+	}
+
+	public Integer getNumero() {
+		return numero;
+	}
+
+	public void setNumero(Integer numero) {
+		this.numero = numero;
+	}
+
+	public Integer getConta() {
+		return conta;
+	}
+
+	public void setConta(Integer conta) {
 		this.conta = conta;
 	}
 

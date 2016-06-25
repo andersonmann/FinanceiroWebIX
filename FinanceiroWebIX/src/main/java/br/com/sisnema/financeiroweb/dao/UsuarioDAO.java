@@ -37,12 +37,12 @@ public class UsuarioDAO extends DAO<Usuario> {
 			getSession().evict(usuarioDoBanco);
 			
 			getSession().update(usuarioDaTela);
-			commit();
-			beginTransaction();
+			comitaTransacao();
+			iniciaTransacao();
 			
 		} catch (OptimisticLockException ole){
-			rollback();
-			beginTransaction();
+			cancelaTransacao();
+			iniciaTransacao();
 			
 			throw new LockException("Este registro acaba de ser atualizado por outro usuário. "
 					+ "Refaça a pesquisa", ole);

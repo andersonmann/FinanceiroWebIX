@@ -53,6 +53,10 @@ public class ActionBean<T> {
 	public void setContextoBean(ContextoBean contextoBean) {
 		this.contextoBean = contextoBean;
 	}
+	
+	protected void ajustaContaSessao(Conta c){
+		contextoBean.setContaAtiva(c);
+	}
 }
 
 

@@ -25,6 +25,11 @@ public class ContaBean extends ActionBean<Conta> {
 		try {
 			selecionada.setUsuario(obterUsuarioLogado());
 			negocio.salvar(selecionada);
+			
+			if(obterContaAtiva().getCodigo().equals(selecionada.getCodigo())){
+				ajustaContaSessao(selecionada);
+			}
+			
 			apresentarMensagemDeSucesso("Conta salva com sucesso");
 			lista = null;
 			selecionada = new Conta();

@@ -8,7 +8,7 @@ import javax.faces.convert.FacesConverter;
 import br.com.sisnema.financeiroweb.model.Categoria;
 import br.com.sisnema.financeiroweb.negocio.CategoriaRN;
 
-@FacesConverter(forClass = Categoria.class)
+@FacesConverter(forClass=Categoria.class)
 public class CategoriaConverter implements Converter {
 
 	public Object getAsObject(FacesContext context, UIComponent component, String codCategoria) {

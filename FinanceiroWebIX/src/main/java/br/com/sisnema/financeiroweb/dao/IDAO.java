@@ -36,7 +36,10 @@ public interface IDAO<T> {
 	 * @param model - entidade contendo a PK populada
 	 */
 	List<T> pesquisar(T filtros);
-	
+
+	void flushAndClear();
+    void comitaTransacao(); 
+    void cancelaTransacao();
 }
 
 
